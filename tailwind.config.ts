@@ -13,6 +13,10 @@ export default {
         "9xl": "1536px",
         "10xl": "1664px",
       },
+      gridTemplateColumns: {
+        "auto-fill-100": "repeat(auto-fill, minmax(100px, 1fr))",
+        "auto-fit-100": "repeat(auto-fit, minmax(100px, 1fr))",
+      },
     },
   },
   plugins: [],
