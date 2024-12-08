@@ -44,9 +44,9 @@ export default async function HeaderComponent() {
           <>
             <Link
               href="/app"
-              className="inline-flex items-center px-4 py-2 font-medium transition-colors duration-300 border rounded-sm gap-x-2 hover:bg-neutral-100 hover:text-neutral-900"
+              className="inline-flex items-center px-4 py-2 font-medium transition-colors duration-300 border rounded-md gap-x-2 hover:bg-neutral-100 hover:text-neutral-900 group"
             >
-              <ArrowRightIcon />
+              <ArrowRightIcon className="transition-transform group-hover:translate-x-1" />
               Comenzar
             </Link>
             <img
@@ -54,21 +54,21 @@ export default async function HeaderComponent() {
               alt="userAvatar"
               width={40}
               height={40}
-              className="min-w-[40px] rounded-full min-h-[40px]"
+              className="min-w-[40px] rounded-md min-h-[40px]"
             />
           </>
         ) : (
           <>
             <Link
               href="/auth"
-              className="px-4 py-2 font-medium transition-colors duration-300 border rounded-sm hover:bg-neutral-100 hover:text-neutral-900"
+              className="px-4 py-2 font-medium transition-colors duration-300 border rounded-md hover:bg-neutral-100 hover:text-neutral-900"
             >
               Iniciar sesión
             </Link>
             <Link
               href="https://discord.com"
               target="_blank"
-              className="px-4 py-2 font-medium transition-colors duration-300 rounded-sm bg-neutral-100 hover:bg-neutral-200 text-neutral-900"
+              className="px-4 py-2 font-medium transition-colors duration-300 rounded-md bg-neutral-100 hover:bg-neutral-200 text-neutral-900"
             >
               Discord
             </Link>
