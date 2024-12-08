@@ -21,6 +21,7 @@ model User {
   emailVerified DateTime?
   accounts      Account[]
   sessions      Session[]
+  Notes         Notes[]
 }
 
 model Session {
@@ -48,4 +49,40 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+}
+
+model Notes {
+  id        String      @id @default(cuid())
+  title     String
+  content   String?     @db.VarChar(1500)
+  url       String?
+  status    NotesStatus @default(ACTIVE)
+  isShared  Boolean     @default(false)
+  priority  Int         @default(0) // 0 = Baja, 1 = Media, 2 = Alta
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  deadline  DateTime?
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
+  Tags      Tags[]
+
+  @@map("notes")
+}
+
+model Tags {
+  id        String   @id @default(cuid())
+  name      String
+  color     String?  @default("#262626")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  noteId    String
+  note      Notes    @relation(fields: [noteId], references: [id])
+
+  @@map("tags")
+}
+
+enum NotesStatus {
+  ACTIVE
+  PROGRESS
+  COMPLETED
 }
