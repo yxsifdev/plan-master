@@ -1,5 +1,6 @@
 import ArrowRightIcon from "@/icons/ArrowRight";
 import { getServerSession } from "next-auth";
+import Image from "next/image";
 import Link from "next/link";
 
 export default async function HeaderComponent() {
@@ -49,7 +50,7 @@ export default async function HeaderComponent() {
               <ArrowRightIcon className="transition-transform group-hover:translate-x-1" />
               Comenzar
             </Link>
-            <img
+            <Image
               src={session?.user?.image as string}
               alt="userAvatar"
               width={40}
