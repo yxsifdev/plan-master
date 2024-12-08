@@ -30,7 +30,6 @@ export default function AppNewNote({ onClose, onSubmit }: AppNewNoteProps) {
   const [status, setStatus] = useState<"ACTIVE" | "PROGRESS" | "COMPLETED">(
     "ACTIVE"
   );
-  const [isShared, setIsShared] = useState(false);
   const [priority, setPriority] = useState(0);
   const [deadline, setDeadline] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +48,7 @@ export default function AppNewNote({ onClose, onSubmit }: AppNewNoteProps) {
         content,
         url: url || undefined,
         status,
-        isShared,
+        isShared: false,
         priority,
         deadline: deadline ? new Date(deadline) : undefined,
         tags,
@@ -139,7 +138,9 @@ export default function AppNewNote({ onClose, onSubmit }: AppNewNoteProps) {
             <select
               id="status"
               value={status}
-              onChange={(e) => setStatus(e.target.value as any)}
+              onChange={(e) =>
+                setStatus(e.target.value as "ACTIVE" | "PROGRESS" | "COMPLETED")
+              }
               className="w-full px-3 py-2 rounded-md bg-neutral-800 text-neutral-100"
             >
               <option value="ACTIVE">Activo</option>

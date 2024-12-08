@@ -30,8 +30,7 @@ export default function AppCards() {
   if (data.length === 0) return <p>No hay notas disponibles</p>;
   return (
     <>
-      {data.map((note, index) => {
-        // if (index > 7) return;
+      {data.map((note) => {
         return (
           <div
             key={note.id}

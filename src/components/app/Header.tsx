@@ -1,5 +1,6 @@
 import { UserProps } from "@/consts/consts";
 import SignOut from "../auth/SignOut";
+import Image from "next/image";
 
 export default function AppHeader({ avatar, name }: UserProps) {
   return (
@@ -15,7 +16,7 @@ export default function AppHeader({ avatar, name }: UserProps) {
           {`${"@" + name}` || "@unknown"}
         </p>
         <SignOut />
-        <img
+        <Image
           src={avatar || ""}
           alt="imgAvatar"
           width={35}

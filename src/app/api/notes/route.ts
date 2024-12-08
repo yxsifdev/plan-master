@@ -31,7 +31,7 @@ export async function GET() {
     );
   } catch (error) {
     return NextResponse.json(
-      { message: "Error al obtener las notas" },
+      { message: "Error al obtener las notas", error: error },
       { status: 500 }
     );
   }
