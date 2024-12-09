@@ -1,3 +1,4 @@
+import ArrowRightIcon from "@/icons/ArrowRight";
 import { NotesProps } from "@/types/notes";
 
 interface NoteModalProps {
@@ -9,7 +10,6 @@ interface NoteModalProps {
 export default function NoteModal({ note, isOpen, onClose }: NoteModalProps) {
   if (!isOpen) return null;
 
-  // Función auxiliar para formatear fechas
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString("es", {
       year: "numeric",
@@ -41,28 +41,26 @@ export default function NoteModal({ note, isOpen, onClose }: NoteModalProps) {
           </svg>
         </button>
 
-        {/* Contenido del modal */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold">
-              {note.url ? (
+            {note.url ? (
+              <div className="flex items-center flex-wrap gap-2">
                 <a
                   href={note.url}
                   target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:underline"
+                  className="font-bold hover:underline"
                 >
                   {note.title}
                 </a>
-              ) : (
-                note.title
-              )}
-            </h2>
+                <ArrowRightIcon className="-rotate-45 text-neutral-500" />
+              </div>
+            ) : (
+              <span className="font-bold">{note.title}</span>
+            )}
           </div>
 
           <p className="text-neutral-300">{note.content}</p>
 
-          {/* Fechas */}
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-sm text-neutral-400">
               <span>Creado el: {formatDate(note.createdAt)}</span>
@@ -75,7 +73,6 @@ export default function NoteModal({ note, isOpen, onClose }: NoteModalProps) {
             </div>
           </div>
 
-          {/* Tags */}
           {note.tags && note.tags.length > 0 && (
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-sm text-neutral-400">Etiquetas:</span>

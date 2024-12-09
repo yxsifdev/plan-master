@@ -5,12 +5,20 @@ import axios from "axios";
 
 import { NotesProps } from "@/types/notes";
 import NoteModal from "./NoteModal";
+import ArrowRightIcon from "@/icons/ArrowRight";
 
-export default function AppCards() {
+export default function AppCards({
+  actionSelect,
+  getCardsSelected,
+}: {
+  actionSelect: boolean;
+  getCardsSelected: (cards: NotesProps[]) => void;
+}) {
   const [data, setNotes] = useState<NotesProps[]>([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedNote, setSelectedNote] = useState<NotesProps | null>(null);
+  const [selectedNotes, setSelectedNotes] = useState<NotesProps[]>([]);
 
   useEffect(() => {
     axios
@@ -25,29 +33,48 @@ export default function AppCards() {
       });
   }, []);
 
-  if (isLoading) return <p>Cargando...</p>;
-  if (error) return <p>Error: {error}</p>;
-  if (data.length === 0) return <p>No hay notas disponibles</p>;
+  const handleNoteClick = (note: NotesProps) => {
+    if (actionSelect) {
+      const isAlreadySelected = selectedNotes.some(
+        (selectedNote) => selectedNote.id === note.id
+      );
+
+      const updatedSelectedNotes = isAlreadySelected
+        ? selectedNotes.filter((selectedNote) => selectedNote.id !== note.id)
+        : [...selectedNotes, note];
+
+      setSelectedNotes(updatedSelectedNotes);
+      getCardsSelected(updatedSelectedNotes);
+    } else {
+      setSelectedNote(note);
+    }
+  };
+
+  if (isLoading) return <p className="text-neutral-500">Cargando...</p>;
+  if (error) return <p className="text-neutral-500">Error: {error}</p>;
+  if (data.length === 0)
+    return <p className="text-neutral-500">🌚 Que vacío está aquí...</p>;
   return (
     <>
       {data.map((note) => {
         return (
           <div
             key={note.id}
-            onClick={() => setSelectedNote(note)}
-            className="flex flex-col justify-between p-4 transition-all border-2 rounded-md cursor-pointer gap-y-2 bg-neutral-800/50 hover:bg-neutral-800/70 border-neutral-800"
+            onClick={() => handleNoteClick(note)}
+            className={`flex flex-col justify-between p-4 transition-all border-2 rounded-md gap-y-2 bg-neutral-800/50 cursor-pointer hover:bg-neutral-800/70 ${
+              actionSelect &&
+              selectedNotes.some((selectedNote) => selectedNote.id === note.id)
+                ? "border-blue-500 bg-blue-500/10"
+                : "border-neutral-800"
+            }`}
           >
-            <div className="flex flex-col gap-y-2">
+            <div className="flex flex-col gap-y-2 break-words overflow-x-hidden">
               <div className="flex flex-wrap items-center justify-between">
                 {note.url ? (
-                  <a
-                    href={note.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-bold hover:underline"
-                  >
-                    {note.title}
-                  </a>
+                  <div className="flex items-center flex-wrap gap-2">
+                    <span className="font-bold">{note.title}</span>
+                    <ArrowRightIcon className="-rotate-45 text-neutral-500" />
+                  </div>
                 ) : (
                   <span className="font-bold">{note.title}</span>
                 )}
@@ -67,7 +94,7 @@ export default function AppCards() {
               </div>
               <p className="text-sm text-neutral-500">{note.content}</p>
             </div>
-            <div className="flex flex-wrap items-center gap-2 mt-auto">
+            <div className="flex flex-wrap items-center gap-2 mt-auto  overflow-x-hidden">
               <span
                 className={`px-2 py-1 text-xs rounded-full ${
                   note.status === "ACTIVE"
@@ -112,6 +139,12 @@ export default function AppCards() {
           isOpen={!!selectedNote}
           onClose={() => setSelectedNote(null)}
         />
+      )}
+
+      {actionSelect && (
+        <span className="absolute bottom-0 right-0 mr-[50px] mb-5 border border-neutral-700 bg-neutral-800 p-2 rounded-md text-neutral-500 font-medium">
+          {selectedNotes.length} notas seleccionadas
+        </span>
       )}
     </>
   );
